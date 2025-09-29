@@ -105,7 +105,7 @@ CREATE TABLE Table_Name (
 
 **Question 1**
 --
--- Create a table named Attendance with the following constraints:
+Create a table named Attendance with the following constraints:
 AttendanceID as INTEGER should be the primary key.
 EmployeeID as INTEGER should be a foreign key referencing Employees(EmployeeID).
 AttendanceDate as DATE.
