@@ -130,13 +130,8 @@ CREATE TABLE Attendance (
 ---
 Insert all students from Archived_students table into the Student_details table.
 
-cid         name        type        notnull     dflt_value  pk
-----------  ----------  ----------  ----------  ----------  ----------
-0           RollNo      INT           0                       1
-1           Name        VARCHAR(100)  0                       0
-2           Gender      VARCHAR(10)   0                       0
-3           Subject     VARCHAR(50)   0                       0
-4           MARKS       INT           0                       0
+<img width="670" height="170" alt="image" src="https://github.com/user-attachments/assets/da049899-2454-4d56-a261-868354748277" />
+
 
 ```sql
 INSERT INTO Student_details (RollNo, Name, Gender, Subject, MARKS)
