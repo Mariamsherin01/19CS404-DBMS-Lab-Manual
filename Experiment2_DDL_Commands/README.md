@@ -171,13 +171,7 @@ Write a SQL query to Add a new column mobilenumber as number in the Student_deta
 
 Sample table: Student_details
 
- cid              name             type   notnull     dflt_value  pk
----------------  ---------------  -----  ----------  ----------  ----------
-0                RollNo           int    0                       1
-1                Name             VARCH  1                       0
-2                Gender           TEXT   1                       0
-3                Subject          VARCH  0                       0
-4                MARKS            INT (  0                       0
+ <img width="699" height="183" alt="image" src="https://github.com/user-attachments/assets/a99dcdb0-09ad-43d3-b58f-23877aacfe6f" />
 
 
 ```sql
@@ -208,11 +202,8 @@ VALUES (1, 'Sarah Parker', 'Manager', 'HR', 60000);
 ---
 In the Products table, insert a record where some fields are NULL, another record where all fields are filled without any NULL values, and a third record where some fields are filled, and others are left as NULL.
 
-ProductID   Name              Category    Price       Stock
-----------  ---------------   ----------  ----------  ----------
-106         Fitness Tracker   Wearables
-107         Laptop            Electronics  999.99      50
-108         Wireless Earbuds  Accessories              100
+<img width="614" height="148" alt="image" src="https://github.com/user-attachments/assets/5b0dfd0b-f792-4934-a21a-6d572656bdf2" />
+
 
 ```sql
 INSERT INTO Products (ProductID, Name, Category) 
@@ -236,13 +227,8 @@ Write a SQL query to Add a new column Mobilenumber as number in the Student_deta
 
 Sample table: Student_details
 
- cid              name             type             notnu  dflt_value  pk
----------------  ---------------  ---------------  -----  ----------  ----------
-0                RollNo           int              0                  1
-1                Name             VARCHAR(100)     1                  0
-2                Gender           TEXT             1                  0
-3                Subject          VARCHAR(30)      0                  0
-4                MARKS            INT (3)          0                  0
+<img width="750" height="181" alt="image" src="https://github.com/user-attachments/assets/90992b8c-b9ae-40d4-b69e-036ea5dc6d89" />
+
 
 ```sql
 ALTER TABLE Student_details
