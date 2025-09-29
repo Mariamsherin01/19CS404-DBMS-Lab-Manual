@@ -105,123 +105,234 @@ CREATE TABLE Table_Name (
 
 **Question 1**
 --
--- Paste Question 1 here
+-- Create a table named Attendance with the following constraints:
+AttendanceID as INTEGER should be the primary key.
+EmployeeID as INTEGER should be a foreign key referencing Employees(EmployeeID).
+AttendanceDate as DATE.
+Status as TEXT should be one of 'Present', 'Absent', 'Leave'.
 
 ```sql
--- Paste your SQL code below for Question 1
+CREATE TABLE Attendance (
+    AttendanceID INTEGER PRIMARY KEY,
+    EmployeeID INTEGER,
+    AttendanceDate DATE,
+    Status TEXT CHECK (Status IN ('Present', 'Absent', 'Leave')),
+    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID)
+);
 ```
 
 **Output:**
 
-![Output1](output.png)
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/1d1f81ac-430a-49a4-8e81-f1a590bf9775" />
+
 
 **Question 2**
 ---
--- Paste Question 2 here
+Insert all students from Archived_students table into the Student_details table.
+
+cid         name        type        notnull     dflt_value  pk
+----------  ----------  ----------  ----------  ----------  ----------
+0           RollNo      INT           0                       1
+1           Name        VARCHAR(100)  0                       0
+2           Gender      VARCHAR(10)   0                       0
+3           Subject     VARCHAR(50)   0                       0
+4           MARKS       INT           0                       0
 
 ```sql
--- Paste your SQL code below for Question 2
+INSERT INTO Student_details (RollNo, Name, Gender, Subject, MARKS)
+SELECT RollNo, Name, Gender, Subject, MARKS
+FROM Archived_students;
 ```
 
 **Output:**
 
-![Output2](output.png)
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/52f188f6-6895-4b13-b508-1f515905a04d" />
+
 
 **Question 3**
 ---
--- Paste Question 3 here
+Create a table named Locations with the following columns:
+
+LocationID as INTEGER
+LocationName as TEXT
+Address as TEXT
 
 ```sql
--- Paste your SQL code below for Question 3
+CREATE TABLE Locations (
+    LocationID INTEGER,
+    LocationName TEXT,
+    Address TEXT
+);
 ```
 
 **Output:**
 
-![Output3](output.png)
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/16350d10-8fa3-4442-8ace-cf89f26118c4" />
+
 
 **Question 4**
 ---
--- Paste Question 4 here
+Write a SQL query to Add a new column mobilenumber as number in the Student_details table.
+
+Sample table: Student_details
+
+ cid              name             type   notnull     dflt_value  pk
+---------------  ---------------  -----  ----------  ----------  ----------
+0                RollNo           int    0                       1
+1                Name             VARCH  1                       0
+2                Gender           TEXT   1                       0
+3                Subject          VARCH  0                       0
+4                MARKS            INT (  0                       0
+
 
 ```sql
--- Paste your SQL code below for Question 4
+ALTER TABLE Student_details
+ADD mobilenumber number;
 ```
 
 **Output:**
 
-![Output4](output.png)
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/77314cbc-93d3-44fe-96f9-f0206213896a" />
+
 
 **Question 5**
 ---
--- Paste Question 5 here
+Insert a record with EmployeeID 001, Name Sarah Parker, Position Manager, Department HR, and Salary 60000 into the Employee table.
 
 ```sql
--- Paste your SQL code below for Question 5
+INSERT INTO Employee (EmployeeID, Name, Position, Department, Salary)
+VALUES (1, 'Sarah Parker', 'Manager', 'HR', 60000);
 ```
 
 **Output:**
 
-![Output5](output.png)
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/3493f15f-2aa5-4ef1-a0d0-93052169a8e1" />
+
 
 **Question 6**
 ---
--- Paste Question 6 here
+In the Products table, insert a record where some fields are NULL, another record where all fields are filled without any NULL values, and a third record where some fields are filled, and others are left as NULL.
+
+ProductID   Name              Category    Price       Stock
+----------  ---------------   ----------  ----------  ----------
+106         Fitness Tracker   Wearables
+107         Laptop            Electronics  999.99      50
+108         Wireless Earbuds  Accessories              100
 
 ```sql
--- Paste your SQL code below for Question 6
+INSERT INTO Products (ProductID, Name, Category) 
+VALUES (106, 'Fitness Tracker', 'Wearables');
+
+INSERT INTO Products (ProductID, Name, Category, Price, Stock) 
+VALUES (107, 'Laptop', 'Electronics', 999.99, 50);
+
+INSERT INTO Products (ProductID, Name, Category, Stock) 
+VALUES (108, 'Wireless Earbuds', 'Accessories', 100);
 ```
 
 **Output:**
 
-![Output6](output.png)
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/152216d6-9cdb-4288-994b-e860c542159a" />
+
 
 **Question 7**
 ---
--- Paste Question 7 here
+Write a SQL query to Add a new column Mobilenumber as number in the Student_details table.
+
+Sample table: Student_details
+
+ cid              name             type             notnu  dflt_value  pk
+---------------  ---------------  ---------------  -----  ----------  ----------
+0                RollNo           int              0                  1
+1                Name             VARCHAR(100)     1                  0
+2                Gender           TEXT             1                  0
+3                Subject          VARCHAR(30)      0                  0
+4                MARKS            INT (3)          0                  0
 
 ```sql
--- Paste your SQL code below for Question 7
+ALTER TABLE Student_details
+ADD Mobilenumber number;
 ```
 
 **Output:**
 
-![Output7](output.png)
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/43d22bb0-0789-400d-947b-237642576cf9" />
+
 
 **Question 8**
 ---
--- Paste Question 8 here
+Create a table named Products with the following constraints:
+ProductID as INTEGER should be the primary key.
+ProductName as TEXT should be unique and not NULL.
+Price as REAL should be greater than 0.
+StockQuantity as INTEGER should be non-negative.
 
 ```sql
--- Paste your SQL code below for Question 8
+CREATE TABLE Products (
+    ProductID INTEGER PRIMARY KEY,
+    ProductName TEXT UNIQUE NOT NULL,
+    Price REAL CHECK (Price > 0),
+    StockQuantity INTEGER CHECK (StockQuantity >= 0)
+);
 ```
 
 **Output:**
 
-![Output8](output.png)
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/1773a4b3-d0a1-41e9-89f2-ed6ddcb814dc" />
+
 
 **Question 9**
 ---
--- Paste Question 9 here
+Create a table named ProjectAssignments with the following constraints:
+AssignmentID as INTEGER should be the primary key.
+EmployeeID as INTEGER should be a foreign key referencing Employees(EmployeeID).
+ProjectID as INTEGER should be a foreign key referencing Projects(ProjectID).
+AssignmentDate as DATE should be NOT NULL.
 
 ```sql
--- Paste your SQL code below for Question 9
+CREATE TABLE ProjectAssignments (
+    AssignmentID INTEGER PRIMARY KEY,
+    EmployeeID INTEGER,
+    ProjectID INTEGER,
+    AssignmentDate DATE NOT NULL,
+    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
+    FOREIGN KEY (ProjectID) REFERENCES Projects(ProjectID)
+);
 ```
 
 **Output:**
 
-![Output9](output.png)
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/a96830df-a3c0-47b3-86ec-11a6c0299052" />
+
 
 **Question 10**
 ---
--- Paste Question 10 here
+Create a new table named item with the following specifications and constraints:
+item_id as TEXT and as primary key.
+item_desc as TEXT.
+rate as INTEGER.
+icom_id as TEXT with a length of 4.
+icom_id is a foreign key referencing com_id in the company table.
+The foreign key should set NULL on updates and deletes.
+item_desc and rate should not accept NULL.
 
 ```sql
--- Paste your SQL code below for Question 10
+CREATE TABLE item (
+    item_id TEXT PRIMARY KEY,
+    item_desc TEXT NOT NULL,
+    rate INTEGER NOT NULL,
+    icom_id TEXT,
+    FOREIGN KEY (icom_id) REFERENCES company(com_id) ON UPDATE SET NULL ON DELETE SET NULL
+);
 ```
 
 **Output:**
 
-![Output10](output.png)
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/b8ad3c2f-1736-4d20-b1c1-d5b9d086ef13" />
+
+**Grade:**
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/f413ffe3-46d1-401a-b8d2-6571857a16f6" />
 
 
 ## RESULT
