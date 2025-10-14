@@ -27,26 +27,24 @@ FlexiFit Gym wants a database to manage its members, trainers, and fitness progr
 
 ### Entities and Attributes
 
-| Entity | Attributes (PK, FK) | Notes |
-|--------|--------------------|-------|
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
-|        |                    |       |
+<img width="1013" height="539" alt="image" src="https://github.com/user-attachments/assets/96eccf59-c0e9-447e-8dbb-52a9975ef88d" />
+
 
 ### Relationships and Constraints
 
-| Relationship | Cardinality | Participation | Notes |
-|--------------|------------|---------------|-------|
-|              |            |               |       |
-|              |            |               |       |
-|              |            |               |       |
+<img width="994" height="430" alt="image" src="https://github.com/user-attachments/assets/783b948b-d6cc-4dbb-ab54-8700e59bd6d6" />
+
 
 ### Assumptions
-- 
-- 
-- 
+- Each session is a personal training appointment between one member and one trainer.
+
+- Programs and personal sessions are billed separately.
+
+- A trainer can handle multiple programs and members.
+
+- Attendance is tracked per session per member.
+  
+  
 
 ---
 
