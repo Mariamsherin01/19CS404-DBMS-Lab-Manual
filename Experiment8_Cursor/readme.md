@@ -79,6 +79,63 @@ END;
 **Output:**  
 The program should display the employee details or an error message.
 
+-- Step 1: Create the table
+CREATE TABLE employees (
+    emp_id NUMBER(5),
+    emp_name VARCHAR2(50),
+    designation VARCHAR2(50)
+);
+
+-- Step 2: Insert sample records
+INSERT INTO employees VALUES (101, 'Arjun', 'Manager');
+INSERT INTO employees VALUES (102, 'Priya', 'Developer');
+INSERT INTO employees VALUES (103, 'Rahul', 'Analyst');
+INSERT INTO employees VALUES (104, 'Sneha', 'Tester');
+
+COMMIT;
+
+-- Step 3: PL/SQL program with cursor and exception handling
+SET SERVEROUTPUT ON;
+
+DECLARE
+    -- Declare cursor to fetch employee name and designation
+    CURSOR emp_cursor IS
+        SELECT emp_name, designation FROM employees;
+
+    v_emp_name employees.emp_name%TYPE;
+    v_designation employees.designation%TYPE;
+
+    -- User-defined exception to handle empty cursor
+    no_data EXCEPTION;
+    v_count NUMBER := 0;
+
+BEGIN
+    OPEN emp_cursor;
+    LOOP
+        FETCH emp_cursor INTO v_emp_name, v_designation;
+        EXIT WHEN emp_cursor%NOTFOUND;
+        v_count := v_count + 1;
+        DBMS_OUTPUT.PUT_LINE('Employee Name: ' || v_emp_name || ' | Designation: ' || v_designation);
+    END LOOP;
+    CLOSE emp_cursor;
+
+    -- Raise exception if no rows found
+    IF v_count = 0 THEN
+        RAISE no_data;
+    END IF;
+
+EXCEPTION
+    WHEN no_data THEN
+        DBMS_OUTPUT.PUT_LINE('No Data Found in employees table.');
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
+END;
+
+
+# OUTPUT 
+<img width="949" height="413" alt="image" src="https://github.com/user-attachments/assets/842d23cb-bf08-4283-9cf8-ad83e0b8c964" />
+
+
 ---
 
 ### **Question 2: Parameterized Cursor with Exception Handling**
@@ -97,6 +154,71 @@ The program should display the employee details or an error message.
 
 **Output:**  
 The program should display the employee details within the specified salary range or an error message if no data is found.
+
+-- Step 1: Add salary column to the employees table
+ALTER TABLE employees
+ADD salary NUMBER(10,2);
+
+-- Step 2: Update sample salary values for employees
+UPDATE employees SET salary = 80000 WHERE emp_id = 101;
+UPDATE employees SET salary = 60000 WHERE emp_id = 102;
+UPDATE employees SET salary = 50000 WHERE emp_id = 103;
+UPDATE employees SET salary = 45000 WHERE emp_id = 104;
+
+COMMIT;
+
+-- Step 3: PL/SQL program with parameterized cursor
+SET SERVEROUTPUT ON;
+
+DECLARE
+    -- Declare parameterized cursor
+    CURSOR emp_cursor(p_min_salary NUMBER, p_max_salary NUMBER) IS
+        SELECT emp_name, designation, salary
+        FROM employees
+        WHERE salary BETWEEN p_min_salary AND p_max_salary;
+
+    v_emp_name employees.emp_name%TYPE;
+    v_designation employees.designation%TYPE;
+    v_salary employees.salary%TYPE;
+
+    -- User-defined exception for no data
+    no_data EXCEPTION;
+    v_count NUMBER := 0;
+
+    -- Input salary range
+    v_min_salary NUMBER := 50000;
+    v_max_salary NUMBER := 80000;
+
+BEGIN
+    OPEN emp_cursor(v_min_salary, v_max_salary);
+
+    LOOP
+        FETCH emp_cursor INTO v_emp_name, v_designation, v_salary;
+        EXIT WHEN emp_cursor%NOTFOUND;
+        v_count := v_count + 1;
+        DBMS_OUTPUT.PUT_LINE('Employee Name: ' || v_emp_name ||
+                             ' | Designation: ' || v_designation ||
+                             ' | Salary: ' || v_salary);
+    END LOOP;
+
+    CLOSE emp_cursor;
+
+    -- Raise exception if no employees found in the range
+    IF v_count = 0 THEN
+        RAISE no_data;
+    END IF;
+
+EXCEPTION
+    WHEN no_data THEN
+        DBMS_OUTPUT.PUT_LINE('No employees found in the given salary range.');
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
+
+END;
+
+# OUTPUT 
+<img width="729" height="374" alt="image" src="https://github.com/user-attachments/assets/42b92fb8-9dbe-4510-89e1-b95fb309830b" />
+
 
 ---
 
@@ -117,6 +239,51 @@ The program should display the employee details within the specified salary rang
 **Output:**  
 The program should display employee names with their department numbers or the appropriate error message if no data is found.
 
+-- Step 1: Add dept_no column to the employees table
+ALTER TABLE employees
+ADD dept_no NUMBER(3);
+
+-- Step 2: Update sample department numbers for employees
+UPDATE employees SET dept_no = 10 WHERE emp_id = 101;
+UPDATE employees SET dept_no = 20 WHERE emp_id = 102;
+UPDATE employees SET dept_no = 10 WHERE emp_id = 103;
+UPDATE employees SET dept_no = 30 WHERE emp_id = 104;
+
+COMMIT;
+
+-- Step 3: PL/SQL program using cursor FOR loop
+SET SERVEROUTPUT ON;
+
+DECLARE
+    -- User-defined exception for no data
+    no_data EXCEPTION;
+    v_count NUMBER := 0;
+
+BEGIN
+    -- Cursor FOR loop automatically opens, fetches, and closes
+    FOR emp_rec IN (SELECT emp_name, dept_no FROM employees) LOOP
+        v_count := v_count + 1;
+        DBMS_OUTPUT.PUT_LINE('Employee Name: ' || emp_rec.emp_name || 
+                             ' | Department No: ' || emp_rec.dept_no);
+    END LOOP;
+
+    -- Raise exception if no rows found
+    IF v_count = 0 THEN
+        RAISE no_data;
+    END IF;
+
+EXCEPTION
+    WHEN no_data THEN
+        DBMS_OUTPUT.PUT_LINE('No employees found in the database.');
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
+
+END;
+
+# OUTPUT 
+<img width="667" height="404" alt="image" src="https://github.com/user-attachments/assets/8c5dc0aa-e301-40ac-b057-b4ed6a05e096" />
+
+
 ---
 
 ### **Question 4: Cursor with `%ROWTYPE` and Exception Handling**
@@ -136,6 +303,71 @@ The program should display employee names with their department numbers or the a
 **Output:**  
 The program should display employee records or the appropriate error message if no data is found.
 
+-- Step 1: Ensure employees table has necessary columns
+-- (skip if already exists, otherwise modify/add columns)
+-- Columns: emp_id, emp_name, designation, salary
+-- Dept_no can remain if present from previous steps
+
+-- Step 2: Insert sample data (if table is empty)
+INSERT INTO employees (emp_id, emp_name, designation, salary, dept_no) 
+VALUES (101, 'Arjun', 'Manager', 80000, 10);
+
+INSERT INTO employees (emp_id, emp_name, designation, salary, dept_no) 
+VALUES (102, 'Priya', 'Developer', 60000, 20);
+
+INSERT INTO employees (emp_id, emp_name, designation, salary, dept_no) 
+VALUES (103, 'Rahul', 'Analyst', 50000, 10);
+
+INSERT INTO employees (emp_id, emp_name, designation, salary, dept_no) 
+VALUES (104, 'Sneha', 'Tester', 45000, 30);
+
+COMMIT;
+
+-- Step 3: PL/SQL program using cursor with %ROWTYPE
+SET SERVEROUTPUT ON;
+
+DECLARE
+    -- Declare cursor for complete employee records
+    CURSOR emp_cursor IS
+        SELECT emp_id, emp_name, designation, salary
+        FROM employees;
+
+    -- Declare a record variable using %ROWTYPE
+    emp_rec emp_cursor%ROWTYPE;
+
+    -- User-defined exception for no data
+    no_data EXCEPTION;
+    v_count NUMBER := 0;
+
+BEGIN
+    OPEN emp_cursor;
+    LOOP
+        FETCH emp_cursor INTO emp_rec;
+        EXIT WHEN emp_cursor%NOTFOUND;
+        v_count := v_count + 1;
+        DBMS_OUTPUT.PUT_LINE('Emp ID: ' || emp_rec.emp_id ||
+                             ' | Name: ' || emp_rec.emp_name ||
+                             ' | Designation: ' || emp_rec.designation ||
+                             ' | Salary: ' || emp_rec.salary);
+    END LOOP;
+    CLOSE emp_cursor;
+
+    -- Raise exception if no rows found
+    IF v_count = 0 THEN
+        RAISE no_data;
+    END IF;
+
+EXCEPTION
+    WHEN no_data THEN
+        DBMS_OUTPUT.PUT_LINE('No employees found in the database.');
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
+
+END;
+
+# OUTPUT 
+
+
 ---
 
 ### **Question 5: Cursor with FOR UPDATE Clause and Exception Handling**
@@ -154,6 +386,82 @@ The program should display employee records or the appropriate error message if 
 
 **Output:**  
 The program should update employee salaries and display a message, or it should display an error message if no data is found.
+
+-- Step 1: Ensure employees table has dept_no and salary columns
+-- (skip if already exists, otherwise modify/add columns)
+
+-- Step 2: Insert sample data (if table is empty)
+INSERT INTO employees (emp_id, emp_name, designation, salary, dept_no) 
+VALUES (101, 'Arjun', 'Manager', 80000, 10);
+
+INSERT INTO employees (emp_id, emp_name, designation, salary, dept_no) 
+VALUES (102, 'Priya', 'Developer', 60000, 20);
+
+INSERT INTO employees (emp_id, emp_name, designation, salary, dept_no) 
+VALUES (103, 'Rahul', 'Analyst', 50000, 10);
+
+INSERT INTO employees (emp_id, emp_name, designation, salary, dept_no) 
+VALUES (104, 'Sneha', 'Tester', 45000, 30);
+
+COMMIT;
+
+-- Step 3: PL/SQL program using cursor FOR UPDATE
+SET SERVEROUTPUT ON;
+
+DECLARE
+    -- Cursor to fetch employees in a specific department for update
+    CURSOR emp_cursor(p_dept_no NUMBER) IS
+        SELECT emp_id, emp_name, salary
+        FROM employees
+        WHERE dept_no = p_dept_no
+        FOR UPDATE OF salary;
+
+    emp_rec emp_cursor%ROWTYPE;
+
+    -- Department to update
+    v_dept_no NUMBER := 10;
+
+    -- User-defined exception for no rows found
+    no_data EXCEPTION;
+    v_count NUMBER := 0;
+
+BEGIN
+    OPEN emp_cursor(v_dept_no);
+
+    LOOP
+        FETCH emp_cursor INTO emp_rec;
+        EXIT WHEN emp_cursor%NOTFOUND;
+
+        -- Update salary (e.g., increase by 10%)
+        UPDATE employees
+        SET salary = salary * 1.10
+        WHERE CURRENT OF emp_cursor;
+
+        v_count := v_count + 1;
+        DBMS_OUTPUT.PUT_LINE('Updated Salary for ' || emp_rec.emp_name || 
+                             ' to ' || ROUND(emp_rec.salary * 1.10));
+    END LOOP;
+
+    CLOSE emp_cursor;
+
+    -- Raise exception if no employees found in department
+    IF v_count = 0 THEN
+        RAISE no_data;
+    END IF;
+
+    COMMIT;
+
+EXCEPTION
+    WHEN no_data THEN
+        DBMS_OUTPUT.PUT_LINE('No employees found in department ' || v_dept_no);
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
+
+END;
+
+# OUTPUT 
+<img width="753" height="403" alt="image" src="https://github.com/user-attachments/assets/1887d3ba-0535-4c32-a58f-b944176da044" />
+
 
 ---
 
